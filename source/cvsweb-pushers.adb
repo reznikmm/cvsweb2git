@@ -192,12 +192,12 @@ package body CvsWeb.Pushers is
            Loader.Fetch_File (File, Rev);
       begin
          if Ada.Directories.Exists (Path.To_UTF_8_String) then
-            Ada.Streams.Stream_IO.Open
+            Ada.Directories.Delete_File (Path.To_UTF_8_String);
+
+            Ada.Streams.Stream_IO.Create
               (Output,
                Ada.Streams.Stream_IO.Out_File,
                Path.To_UTF_8_String);
-
-            Ada.Streams.Stream_IO.Write (Output, Data.To_Stream_Element_Array);
          else
             declare
                Dirs : constant League.String_Vectors.Universal_String_Vector :=
@@ -210,19 +210,20 @@ package body CvsWeb.Pushers is
                   Ada.Streams.Stream_IO.Out_File,
                   Path.To_UTF_8_String);
 
-               Ada.Streams.Stream_IO.Write
-                 (Output, Data.To_Stream_Element_Array);
-
                Self.Git_Add (File);
             end;
          end if;
+
+         Ada.Streams.Stream_IO.Write
+           (Output, Data.To_Stream_Element_Array);
+
          Ada.Streams.Stream_IO.Close (Output);
       end Fetch_File;
 
       use type League.Strings.Universal_String;
 
       Commits : constant access Map := Loader.Commits;
-      Date     : League.Calendars.Date_Time;
+      Date    : League.Calendars.Date_Time;
       Comment : League.Strings.Universal_String;
       Prev    : League.Strings.Universal_String;
       Cursor  : CvsWeb.Loaders.Commit_Maps.Cursor := Commits.First;
