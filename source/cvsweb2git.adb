@@ -40,20 +40,46 @@ with CvsWeb.Pushers;
 procedure CvsWeb2git is
    function To_Date return League.Calendars.Date_Time;
 
-   function To_Date return League.Calendars.Date_Time is
-   begin
-      return League.Calendars.ISO_8601.Create
-        (Year           => 1999,
-         Month          => 1,
-         Day            => 1,
-         Hour           => 0,
-         Minute         => 0,
-         Second         => 0,
-         Nanosecond_100 => 0);
-   end To_Date;
-
    Args   : constant League.String_Vectors.Universal_String_Vector :=
      League.Application.Arguments;
+
+   function To_Date return League.Calendars.Date_Time is
+      Result : League.Calendars.Date_Time :=
+        League.Calendars.ISO_8601.Create
+          (Year           => 1999,
+           Month          => 1,
+           Day            => 1,
+           Hour           => 0,
+           Minute         => 0,
+           Second         => 0,
+           Nanosecond_100 => 0);
+   begin
+      if Args.Length > 2 then
+         declare
+            use League.Calendars.ISO_8601;
+            List : constant League.String_Vectors.Universal_String_Vector :=
+              Args.Element (3).Split ('.');
+         begin
+            Result := League.Calendars.ISO_8601.Create
+              (Year           => Year_Number'Wide_Wide_Value
+                 (List (1).To_Wide_Wide_String),
+               Month          => Month_Number'Wide_Wide_Value
+                 (List (2).To_Wide_Wide_String),
+               Day            => Day_Number'Wide_Wide_Value
+                 (List (3).To_Wide_Wide_String),
+               Hour           => Hour_Number'Wide_Wide_Value
+                 (List (4).To_Wide_Wide_String),
+               Minute         => Minute_Number'Wide_Wide_Value
+                 (List (5).To_Wide_Wide_String),
+               Second         => Second_Number'Wide_Wide_Value
+                 (List (6).To_Wide_Wide_String),
+               Nanosecond_100 => 0);
+         end;
+      end if;
+
+      return Result;
+   end To_Date;
+
    URL    : League.Strings.Universal_String;
    Root   : League.Strings.Universal_String;
    Loader : CvsWeb.Loaders.Loader;
