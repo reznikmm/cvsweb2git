@@ -18,7 +18,7 @@ To build it:
 # Usage
 
     git init /tmp/ada-auth/
-    (cd /tmp/ada-auth && git config core.autocrlf true &&
+    (cd /tmp/ada-auth && git config core.autocrlf input &&
     git config user.email "you@example.com" &&
     git config user.name "Your Name")
     .obj/cvsweb2git http://www.ada-auth.org/cgi-bin/cvsweb.cgi/arm/ /tmp/ada-auth/

@@ -1,0 +1,19 @@
+name = "cvsweb2git"
+description = "A tool imports CVS repository shared on ada-auth.org"
+version = "0.1.0-dev"
+website = "https://github.com/reznikmm/cvsweb2git"
+licenses = "BSD-3-Clause"
+
+authors = ["Max Reznik"]
+maintainers = ["Max Reznik <reznikmm@gmail.com>"]
+maintainers-logins = ["reznikmm"]
+
+executables = ["cvsweb2git"]
+project-files = ["gnat/cvsweb2git.gpr"]
+
+[configuration]
+disabled = true
+
+[[depends-on]]
+matreshka_league = "*"
+aws = "any"
